@@ -1,6 +1,5 @@
 const User = require('../models/User')
 const Post = require('../models/Post')
-const { post } = require('../router')
 const Follow = require('../models/Follow')
 
 exports.doesUsernameExist = function(req,res){
@@ -71,7 +70,7 @@ exports.apiLogin = function(req,res){
      }).catch(function(error){
         res.json("password salah")
      })
-   }
+   } 
 
 exports.logout = function(req, res){
     req.session.destroy(function(){

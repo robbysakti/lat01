@@ -14,7 +14,7 @@ app.use('/api',require('./router-api'))
 
 let sessionOptions = session({
     secret:" javasript kereeeen ",
-    store: new MongoStore({client: require('../db')}),
+    store: new MongoStore({client: require('./db')}),
     resave: false,
     saveUninitialized: false,
     cookie:{maxAge: 1000 * 60 * 60 * 24,httpOnly:true}

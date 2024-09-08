@@ -3,7 +3,6 @@ const followsCollection = require('../db').db().collection("follows")
 const ObjectID = require("mongodb").ObjectID
 const { resolve } = require('mongodb/lib/core/topologies/read_preference')
 const User = require("./User")
-const { post } = require('../router')
 const sanitizeHTML = require('sanitize-html')
 
 let Post=function(data,userId,requestedPostId){
