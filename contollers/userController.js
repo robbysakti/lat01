@@ -1,6 +1,27 @@
 const User = require('../models/User')
 const Post = require('../models/Post')
 const Follow = require('../models/Follow')
+const jwt = require('jsonwebtoken')
+
+
+exports.apiGetPostsByUsername =async function(req, res){
+    try{
+        let authorDoc = await User.findByUsername(req.params.username)
+        let posts = await Post.findByAuthorId(authorDoc._id)
+        res.json(posts)
+    }catch{
+        res.json("maaf user tidak valid")
+    }
+}
+
+exports.apiMustBeLoggedIn = function(req, res, next){
+    try{
+       req.apiUser = jwt.verify(req.body.token,process.env.JWTSECRET)
+        next()
+    }catch{
+        res.json("sorry kamu harus memiliki token yang valid")
+    }
+}
 
 exports.doesUsernameExist = function(req,res){
      User.findByUsername(req.body.username).then(function(){
@@ -66,7 +87,7 @@ exports.login = function(req,res){
 exports.apiLogin = function(req,res){
     let user = new User(req.body)
      user.login().then(function(result){
-        res.json("ok password benar")
+        res.json(jwt.sign({_id:user.data._id},process.env.JWTSECRET,{expiresIn:'7d'}))
      }).catch(function(error){
         res.json("password salah")
      })

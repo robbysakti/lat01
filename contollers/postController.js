@@ -17,6 +17,15 @@ req.session.save(()=> res.redirect("/create-post"))
 })
 }
 
+exports.apiCreate = function(req,res){
+    const post = new Post(req.body, req.apiUser._id)
+    post.create().then(function(newId){
+    res.json("berhasil")
+    }).catch(function(errors){
+    res.json(errors)
+    })
+    }
+
 exports.viewSingle = async function(req,res){
 try{
     
@@ -81,6 +90,14 @@ req.session.save(()=>res.redirect(`/profile/${req.session.user.username}`))
     
 })
 }
+
+exports.apiDelete = function(req,res){
+    Post.delete(req.params.id,req.apiUser._id).then(()=>{
+        res.json("berhasil")
+    }).catch(()=>{
+        res.json("tidak memiliki izin")
+    })
+    }
 
 exports.search = function(req,res){
  Post.search(req.body.searchTerm).then(posts=>{   //disini menjadi array kosong "posts"
